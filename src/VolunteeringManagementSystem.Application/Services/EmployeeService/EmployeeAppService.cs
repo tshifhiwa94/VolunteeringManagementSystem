@@ -22,31 +22,35 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
     {
         private readonly IRepository<Employee, Guid> _employeeRepository;
         private readonly IRepository<Department, Guid> _departmentRepository;
+        private readonly IRepository<Address, Guid> _addressAppService;
         private readonly UserManager _userManager;
-        public EmployeeAppService(IRepository<Employee, Guid> employeeRepository, IRepository<Department, Guid> departmentRepository, UserManager userManager)
+        public EmployeeAppService(IRepository<Employee, Guid> employeeRepository, IRepository<Department, Guid> departmentRepository,
+            UserManager userManager, IRepository<Address, Guid> addressAppService)
         {
             _employeeRepository = employeeRepository;
             _departmentRepository = departmentRepository;
             _userManager = userManager;
-
+            _addressAppService = addressAppService;
         }
 
         [HttpPost]
         public async Task<EmployeeDto> CreateAsync(EmployeeDto input)
         {
+        
             var employee = ObjectMapper.Map<Employee>(input);
 
-           
             employee.User = await CreateUserAsync(input);
 
-            employee.Department =  _departmentRepository.Get(input.DepartmentId);
-           
 
-            // Save the employee entity using the employee repository
+            employee.Department = _departmentRepository.Get(input.DepartmentId);
+            //employee.Department=await _departmentRepository.InsertAsync(employee.Department);
+            //employee.Address = await _addressAppService.InsertAsync(employee.Address);
+
+
             await _employeeRepository.InsertAsync(employee);
-
             return ObjectMapper.Map<EmployeeDto>(employee);
         }
+
 
 
         [HttpDelete]

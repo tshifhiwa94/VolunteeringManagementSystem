@@ -19,7 +19,7 @@ namespace VolunteeringManagementSystem.Services.EmployeeService.Dto
     {
         public string EmployeeNo { get; set; }
         public Guid DepartmentId { get; set; }
-        //public DepartmentDto Department { get; set; }
+        //public DepartmentDto? Department { get; set; }
 
     }
 }

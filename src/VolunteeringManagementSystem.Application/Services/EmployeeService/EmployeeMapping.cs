@@ -12,16 +12,14 @@ using VolunteeringManagementSystem.Services.VolunteerService.Dto;
 
 namespace VolunteeringManagementSystem.Services.EmployeeService
 {
-    public class EmployeeMapping:Profile
+    public class EmployeeMapping : Profile
     {
         public EmployeeMapping()
         {
             CreateMap<Employee, EmployeeDto>()
                  .ForMember(x => x.DepartmentId, m => m.MapFrom(x => x.Department != null ? x.Department.Id : (Guid?)null))
-                .ForMember(dto => dto.Title, opt => opt.MapFrom(src => src.Title != null && src.Title != 0 ? src.Title.GetnumDescription() : null))
-                .ForMember(dto => dto.Gender, opt => opt.MapFrom(src => src.Gender != null && src.Gender != 0 ? src.Gender.GetnumDescription() : null))
-                 .ForMember(dto => dto.UserId, opt => opt.MapFrom(src => src.User != null ? src.User.Id : (long?)null))
-            .ForMember(x => x.AddressId, m => m.MapFrom(x => x.Address != null ? x.Address.Id : (Guid?)null));
+                 .ForMember(dto => dto.GenderName, opt => opt.MapFrom(src => src.Gender != null && src.Gender != 0 ? src.Gender.GetnumDescription() : null))
+                 .ForMember(dto => dto.UserId, opt => opt.MapFrom(src => src.User != null ? src.User.Id : (long?)null));
 
 
 

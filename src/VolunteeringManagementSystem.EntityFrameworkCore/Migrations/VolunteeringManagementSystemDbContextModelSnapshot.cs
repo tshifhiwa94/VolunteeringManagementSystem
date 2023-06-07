@@ -1714,8 +1714,8 @@ namespace VolunteeringManagementSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -1739,6 +1739,10 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<string>("IdNumber")
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1751,17 +1755,11 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Title")
-                        .HasColumnType("int");
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
@@ -1770,8 +1768,6 @@ namespace VolunteeringManagementSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.HasIndex("UserId");
 
@@ -1824,7 +1820,7 @@ namespace VolunteeringManagementSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CompletedDay")
+                    b.Property<DateTime?>("CompletedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreationTime")
@@ -1854,7 +1850,7 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("StartDay")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("TaskItemId")
@@ -2359,15 +2355,9 @@ namespace VolunteeringManagementSystem.Migrations
 
             modelBuilder.Entity("VolunteeringManagementSystem.Domain.Person", b =>
                 {
-                    b.HasOne("VolunteeringManagementSystem.Domain.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("VolunteeringManagementSystem.Authorization.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Address");
 
                     b.Navigation("User");
                 });

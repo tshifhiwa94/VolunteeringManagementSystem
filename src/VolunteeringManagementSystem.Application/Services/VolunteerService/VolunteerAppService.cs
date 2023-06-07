@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services;
 using Abp.Domain.Repositories;
 using Abp.IdentityFramework;
+using Abp.UI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,46 +18,49 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
 {
     public class VolunteerAppService:ApplicationService,IVolunteerAppService
     {
-        private readonly IRepository<Volunteer,Guid> _repository;
+        private readonly IRepository<Volunteer,Guid> _volunteerRepository;
         private readonly UserManager _userManager;
-        public VolunteerAppService(IRepository<Volunteer, Guid> repository, UserManager userManager)
+        private readonly IRepository<Address, Guid> _addressAppService;
+        public VolunteerAppService(IRepository<Volunteer, Guid> volunteerRepository, UserManager userManager, IRepository<Address, Guid> addressAppService)
         {
-            _repository = repository;
+            _volunteerRepository=volunteerRepository;
             _userManager = userManager;
+            _addressAppService = addressAppService;
         }
 
         [HttpPost]
         public async Task<VolunteerDto> CreateAsync(VolunteerDto input)
         {
             var volunteer = ObjectMapper.Map<Volunteer>(input);
+          
             volunteer.User = await CreateUserAsync(input);
-            return ObjectMapper.Map<VolunteerDto>(await _repository.InsertAsync(volunteer));
-
+            //volunteer.Address = await _addressAppService.InsertAsync(volunteer.Address);
+            return ObjectMapper.Map<VolunteerDto>(await _volunteerRepository.InsertAsync(volunteer));
         }
         [HttpDelete]
         public async Task DeleteAsnyc(Guid id)
         {
-            await _repository.DeleteAsync(id);
+            await _volunteerRepository.DeleteAsync(id);
         }
 
         [HttpGet]
         public async Task<List<VolunteerDto>> GetAllAsnyc()
         {
-            return ObjectMapper.Map<List<VolunteerDto>>(_repository.GetAllIncluding(x => x.User));
+            return ObjectMapper.Map<List<VolunteerDto>>(_volunteerRepository.GetAllIncluding(x => x.User));
         }
 
         [HttpGet]
         public async Task<VolunteerDto> GetAsnyc(Guid id)
         {
-            return ObjectMapper.Map<VolunteerDto>(_repository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == id));
+            return ObjectMapper.Map<VolunteerDto>(_volunteerRepository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == id));
         }
 
         [HttpPut]
         public async Task<VolunteerDto> UpdateAsync(VolunteerDto input)
         {
-            var volunteer = _repository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == input.Id);
+            var volunteer = _volunteerRepository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == input.Id);
             ObjectMapper.Map(volunteer, input);
-            return ObjectMapper.Map<VolunteerDto>(await _repository.UpdateAsync(volunteer));
+            return ObjectMapper.Map<VolunteerDto>(await _volunteerRepository.UpdateAsync(volunteer));
         }
 
         [HttpPost]
@@ -86,3 +90,21 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//if (volunteer == null)
+//{
+//    throw new UserFriendlyException(L("No information was passed"));
+//}

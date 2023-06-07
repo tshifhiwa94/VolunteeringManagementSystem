@@ -16,9 +16,8 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
         public VolunteerMapping()
         {
             CreateMap<Volunteer, VolunteerDto>()
-                .ForMember(dto => dto.Title, opt => opt.MapFrom(src => src.Title != null && src.Title != 0 ? src.Title.GetnumDescription() : null))
-                .ForMember(dto => dto.Gender, opt => opt.MapFrom(src => src.Gender != null && src.Gender != 0 ? src.Gender.GetnumDescription() : null))
-                .ForMember(x => x.AddressId, m => m.MapFrom(x => x.Address != null ? x.Address.Id : (Guid?)null))
+               
+                .ForMember(dto => dto.GenderName, opt => opt.MapFrom(src => src.Gender != null && src.Gender != 0 ? src.Gender.GetnumDescription() : null))
                 .ForMember(x => x.UserId, m => m.MapFrom(x => x.User != null ? x.User.Id : (long?)null));
 
 
