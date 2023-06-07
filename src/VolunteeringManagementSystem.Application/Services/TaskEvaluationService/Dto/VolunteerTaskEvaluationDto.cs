@@ -16,7 +16,17 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService.Dto
         public  string Comments { get; set; }
         public  DateTime EvaluationDate { get; set; }
         public  Guid TaskAssignId { get; set; }
+       
         public  Guid EmployeeId { get; set; }
         public  Guid VolunteerId { get; set; }
     }
+
+    [AutoMap(typeof(VolunteerTaskEvaluation))]
+    public class VolunteerTaskEvaluationAnalysisDto
+    {
+        public int TotalEvaluations { get; set; }
+        public double AverageRating { get; set; }
+        // Other analysis properties specific to VolunteerTaskEvaluation
+    }
+
 }

@@ -19,6 +19,13 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService
                 .ForMember(x => x.TaskAssignId, m => m.MapFrom(x => x.TaskAssign != null ? x.TaskAssign.Id : (Guid?)null))
                 .ForMember(x => x.VolunteerId, m => m.MapFrom(x => x.Volunteer != null ? x.Volunteer.Id : (Guid?)null));
 
+            CreateMap<VolunteerTaskEvaluation, VolunteerTaskEvaluationDto>();
+
+            // Mapping from VolunteerTaskEvaluation to VolunteerTaskEvaluationAnalysisDto
+            CreateMap<VolunteerTaskEvaluation, VolunteerTaskEvaluationAnalysisDto>()
+                .ForMember(dest => dest.TotalEvaluations, opt => opt.MapFrom(src => 1)) // Set total evaluations to 1
+                .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.Rating)); // Set average rating to the rating of the evaluation
+        
 
             CreateMap<VolunteerTaskEvaluationDto, VolunteerTaskEvaluation>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());

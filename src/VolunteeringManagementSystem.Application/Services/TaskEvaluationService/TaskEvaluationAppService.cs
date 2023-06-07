@@ -58,10 +58,27 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService
         public async Task<VolunteerTaskEvaluationDto> UpdateAsync(VolunteerTaskEvaluationDto input)
         {
             var taskEvaluation = _repository.GetAllIncluding(a => a.TaskAssign, b => b.Employee, z => z.Volunteer).FirstOrDefault(x => x.Id == input.Id);
+
             ObjectMapper.Map(input, taskEvaluation);
             return ObjectMapper.Map<VolunteerTaskEvaluationDto>(await _repository.UpdateAsync(taskEvaluation));
         }
 
-     
+        public async Task<VolunteerTaskEvaluationAnalysisDto> PerformAnalysisAsync()
+        {
+            var taskEvaluations = await _repository.GetAllListAsync();
+
+            var analysis = new VolunteerTaskEvaluationAnalysisDto();
+
+            analysis.TotalEvaluations = taskEvaluations.Count;
+            analysis.AverageRating = taskEvaluations.Any() ? taskEvaluations.Average(te => te.Rating) : 0;
+
+            return analysis;
+        }
+
+
+
+
+
+
     }
 }

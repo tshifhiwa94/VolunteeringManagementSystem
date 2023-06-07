@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VolunteeringManagementSystem.Authorization.Accounts;
 using VolunteeringManagementSystem.Authorization.Users;
 using VolunteeringManagementSystem.Domain;
 using VolunteeringManagementSystem.Services.EmployeeService.Dto;
 using VolunteeringManagementSystem.Services.VolunteerService.Dto;
+using VolunteeringManagementSystem.Users.Dto;
 
 namespace VolunteeringManagementSystem.Services.VolunteerService
 {
@@ -21,18 +23,24 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
         private readonly IRepository<Volunteer,Guid> _volunteerRepository;
         private readonly UserManager _userManager;
         private readonly IRepository<Address, Guid> _addressAppService;
+     
         public VolunteerAppService(IRepository<Volunteer, Guid> volunteerRepository, UserManager userManager, IRepository<Address, Guid> addressAppService)
         {
             _volunteerRepository=volunteerRepository;
             _userManager = userManager;
             _addressAppService = addressAppService;
+           
         }
 
         [HttpPost]
         public async Task<VolunteerDto> CreateAsync(VolunteerDto input)
         {
             var volunteer = ObjectMapper.Map<Volunteer>(input);
-          
+            if (volunteer == null)
+            {
+                throw new UserFriendlyException("Input the required Fields");
+            }
+
             volunteer.User = await CreateUserAsync(input);
             //volunteer.Address = await _addressAppService.InsertAsync(volunteer.Address);
             return ObjectMapper.Map<VolunteerDto>(await _volunteerRepository.InsertAsync(volunteer));
@@ -52,16 +60,28 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
         [HttpGet]
         public async Task<VolunteerDto> GetAsnyc(Guid id)
         {
-            return ObjectMapper.Map<VolunteerDto>(_volunteerRepository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == id));
+            var volunteer = _volunteerRepository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == id);
+
+            if (volunteer == null)
+            {
+                throw new UserFriendlyException("This volunteer  does not exist");
+            }
+            return ObjectMapper.Map<VolunteerDto>(volunteer);
         }
 
         [HttpPut]
         public async Task<VolunteerDto> UpdateAsync(VolunteerDto input)
         {
             var volunteer = _volunteerRepository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == input.Id);
+            if (volunteer == null)
+            {
+                throw new UserFriendlyException("This volunteer  does not exist");
+            }
             ObjectMapper.Map(volunteer, input);
             return ObjectMapper.Map<VolunteerDto>(await _volunteerRepository.UpdateAsync(volunteer));
         }
+
+      
 
         [HttpPost]
         private async Task<User> CreateUserAsync(VolunteerDto input)
@@ -99,12 +119,3 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
 
 
 
-
-
-
-
-
-//if (volunteer == null)
-//{
-//    throw new UserFriendlyException(L("No information was passed"));
-//}

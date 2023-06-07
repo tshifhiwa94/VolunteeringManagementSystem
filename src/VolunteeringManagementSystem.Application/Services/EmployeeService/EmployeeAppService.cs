@@ -3,6 +3,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using Abp.IdentityFramework;
+using Abp.UI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -38,6 +39,10 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         {
         
             var employee = ObjectMapper.Map<Employee>(input);
+            if (employee == null)
+            {
+                throw new UserFriendlyException("Input the required Fields");
+            }
 
             employee.User = await CreateUserAsync(input);
 
@@ -81,6 +86,10 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         public async Task<EmployeeDto> GetAsync(Guid Id)
         {
             var employee = _employeeRepository.GetAllIncluding(x => x.Department).FirstOrDefault(x=>x.Id == Id);
+            if (employee == null)
+            {
+                throw new UserFriendlyException("Employee does not exist");
+            }
 
             return ObjectMapper.Map<EmployeeDto>(employee);
         }
@@ -90,6 +99,10 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         public async  Task<EmployeeDto> UpdateAsync(EmployeeDto input)
         {
             var employee = _employeeRepository.GetAllIncluding(x => x.Department).FirstOrDefault(x => x.Id == input.Id);
+            if (employee == null)
+            {
+                throw new UserFriendlyException("Employee does not exist");
+            }
             ObjectMapper.Map(employee, input);
             return ObjectMapper.Map<EmployeeDto>(await _employeeRepository.UpdateAsync(employee));
 

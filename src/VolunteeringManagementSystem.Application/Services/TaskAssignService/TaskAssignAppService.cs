@@ -81,6 +81,8 @@ namespace VolunteeringManagementSystem.Services.TaskAssignService
         {
             return await _taskAssignRepository.GetAllIncluding(x => x.TaskItem, y => y.Volunteer).Where(task => task.CompletedDate != null) .ToListAsync();
         }
+     
+
 
 
 
