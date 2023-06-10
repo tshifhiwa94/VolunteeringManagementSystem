@@ -21,9 +21,10 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService.Dto
         public  Guid VolunteerId { get; set; }
     }
 
-    [AutoMap(typeof(VolunteerTaskEvaluation))]
+    [AutoMapTo(typeof(VolunteerTaskEvaluation))]
     public class VolunteerTaskEvaluationAnalysisDto
     {
+        public Guid VolunteerId { get; set; }
         public int TotalEvaluations { get; set; }
         public double AverageRating { get; set; }
         // Other analysis properties specific to VolunteerTaskEvaluation

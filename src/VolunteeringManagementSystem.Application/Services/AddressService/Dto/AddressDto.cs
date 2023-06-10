@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VolunteeringManagementSystem.Domain;
+using VolunteeringManagementSystem.Domain.Enum;
 
 namespace VolunteeringManagementSystem.Services.AddressService.Dto
 {
@@ -14,7 +15,8 @@ namespace VolunteeringManagementSystem.Services.AddressService.Dto
     {
         public  string StreetName { get; set; }
         public string City { get; set; }
-        public  string Province { get; set; }
+        public  RefListProvince Province { get; set; }
+        public  string? ProvinceName { get; set; }
         public string PostalCode { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Abp.IdentityFramework;
 using Abp.UI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,17 +44,12 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
             {
                 throw new UserFriendlyException("Input the required Fields");
             }
-
+            employee.Department = _departmentRepository.Get(input.DepartmentId);
+            employee.Address = await _addressAppService.InsertAsync(employee.Address);
             employee.User = await CreateUserAsync(input);
 
-
-            employee.Department = _departmentRepository.Get(input.DepartmentId);
-            //employee.Department=await _departmentRepository.InsertAsync(employee.Department);
-            //employee.Address = await _addressAppService.InsertAsync(employee.Address);
-
-
-            await _employeeRepository.InsertAsync(employee);
-            return ObjectMapper.Map<EmployeeDto>(employee);
+            
+            return ObjectMapper.Map<EmployeeDto>(await _employeeRepository.InsertAsync(employee));
         }
 
 
@@ -69,10 +65,10 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         {
             try
             {
-                var employee = _employeeRepository.GetAllIncluding(x => x.Department);
+                var employees =await _employeeRepository.GetAllIncluding(x => x.Department,x=>x.Address).ToListAsync();
                 var result = new PagedResultDto<EmployeeDto>();
-                result.TotalCount = employee.Count();
-                result.Items = ObjectMapper.Map<IReadOnlyList<EmployeeDto>>(employee);
+                result.TotalCount = employees.Count();
+                result.Items = ObjectMapper.Map<IReadOnlyList<EmployeeDto>>(employees);
 
                 return await Task.FromResult(result);
             }
@@ -85,7 +81,7 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         [HttpGet]
         public async Task<EmployeeDto> GetAsync(Guid Id)
         {
-            var employee = _employeeRepository.GetAllIncluding(x => x.Department).FirstOrDefault(x=>x.Id == Id);
+            var employee = await _employeeRepository.GetAllIncluding(x => x.Department,x=>x.Address).FirstOrDefaultAsync(x=>x.Id == Id);
             if (employee == null)
             {
                 throw new UserFriendlyException("Employee does not exist");
@@ -98,7 +94,7 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         [HttpPut]
         public async  Task<EmployeeDto> UpdateAsync(EmployeeDto input)
         {
-            var employee = _employeeRepository.GetAllIncluding(x => x.Department).FirstOrDefault(x => x.Id == input.Id);
+            var employee = _employeeRepository.GetAllIncluding(x => x.Department,x=>x.Address).FirstOrDefault(x => x.Id == input.Id);
             if (employee == null)
             {
                 throw new UserFriendlyException("Employee does not exist");

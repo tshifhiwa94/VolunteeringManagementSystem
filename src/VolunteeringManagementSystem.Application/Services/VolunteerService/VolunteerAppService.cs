@@ -41,8 +41,9 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
                 throw new UserFriendlyException("Input the required Fields");
             }
 
+            
+            volunteer.Address = await _addressAppService.InsertAsync(volunteer.Address);
             volunteer.User = await CreateUserAsync(input);
-            //volunteer.Address = await _addressAppService.InsertAsync(volunteer.Address);
             return ObjectMapper.Map<VolunteerDto>(await _volunteerRepository.InsertAsync(volunteer));
         }
         [HttpDelete]
@@ -54,13 +55,13 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
         [HttpGet]
         public async Task<List<VolunteerDto>> GetAllAsnyc()
         {
-            return ObjectMapper.Map<List<VolunteerDto>>(_volunteerRepository.GetAllIncluding(x => x.User));
+            return ObjectMapper.Map<List<VolunteerDto>>(_volunteerRepository.GetAllIncluding(x => x.User,x=>x.Address));
         }
 
         [HttpGet]
         public async Task<VolunteerDto> GetAsnyc(Guid id)
         {
-            var volunteer = _volunteerRepository.GetAllIncluding(x => x.User).FirstOrDefault(x => x.Id == id);
+            var volunteer = _volunteerRepository.GetAllIncluding(x => x.User,x=>x.Address).FirstOrDefault(x => x.Id == id);
 
             if (volunteer == null)
             {

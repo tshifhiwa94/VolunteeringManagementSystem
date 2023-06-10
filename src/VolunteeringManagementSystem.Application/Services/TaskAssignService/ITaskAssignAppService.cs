@@ -10,7 +10,7 @@ namespace VolunteeringManagementSystem.Services.TaskAssignService
 {
     public interface ITaskAssignAppService:IApplicationService
     {
-        Task<TaskAssignDto> CreateAsync(TaskAssignDto input);
+        //Task<TaskAssignDto> CreateAsync(TaskAssignDto input);
         Task<TaskAssignDto> UpdateAsync(TaskAssignDto input);
 
         Task<TaskAssignDto> GetAsync(Guid id);

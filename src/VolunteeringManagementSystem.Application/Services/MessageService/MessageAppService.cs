@@ -2,11 +2,13 @@
 using Abp.Domain.Repositories;
 using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VolunteeringManagementSystem.Authorization.Users;
 using VolunteeringManagementSystem.Domain;
 using VolunteeringManagementSystem.Services.MessageService.Dto;
 
@@ -37,20 +39,40 @@ namespace VolunteeringManagementSystem.Services.MessageService
             }
                 message.Volunteer = _volunteerRepository.Get(input.VolunteerId);
                 message.Employee = _employeeRepository.Get(input.EmployeeId);
+                message.TaskAssign = _taskAssignRepository.Get(input.TaskAssignId);
                 message.SentDate = DateTime.Now;
                 message.IsRead = false;
 
                 return ObjectMapper.Map<MessageDto>(await _messageRepository.InsertAsync(message));
-            
-
          
         }
+        [HttpGet]
 
+        public async Task<MessageDto> GetMessage(Guid id)
+
+        {
+            if (id == Guid.Empty)
+            {
+                throw new UserFriendlyException("Id does not exist");
+            }
+            var messages = _messageRepository.GetAllIncluding(m => m.Employee, mbox => mbox.Volunteer,x=>x.TaskAssign).FirstOrDefault(x => x.Id == id);
+
+            return  ObjectMapper.Map<MessageDto>(messages);
+        }
 
         [HttpGet]
-        public async Task<List<MessageDto>> GetMessagesByUserAsync(Guid userId)
+        public async Task<List<MessageDto>> GetMessagesByUserAsync(Guid senderId)
         {
-            var messages = await _messageRepository.GetAllListAsync(m => m.Employee.Id == userId || m.Volunteer.Id == userId);
+
+            if (senderId == Guid.Empty)
+            {
+                throw new UserFriendlyException("senderId does not exist");
+            }
+
+            var messages = await _messageRepository
+            .GetAllIncluding(m => m.Employee, m => m.Volunteer)
+            .Where(m => m.Employee.Id == senderId || m.Volunteer.Id == senderId)
+            .ToListAsync();
             if (messages == null)
             {
                 throw new UserFriendlyException("Messages do not exist for this user.");
@@ -63,7 +85,14 @@ namespace VolunteeringManagementSystem.Services.MessageService
         [HttpGet]
         public async Task<List<MessageDto>> GetMessagesBetweenUsersAsync(Guid senderId, Guid recipientId)
         {
-            var messages = await _messageRepository.GetAllListAsync( m => (m.Employee.Id == senderId && m.Volunteer.Id == recipientId) ||(m.Employee.Id == recipientId && m.Volunteer.Id == senderId));
+            if (senderId == null && recipientId == null) {
+                throw new UserFriendlyException("senderId or recipientId or both Required");
+            }
+            var messages = await _messageRepository
+                        .GetAllIncluding(m => m.Employee, m => m.Volunteer)
+                        .Where(m => (m.Employee.Id == senderId && m.Volunteer.Id == recipientId) ||
+                        (m.Employee.Id == recipientId && m.Volunteer.Id == senderId))
+                           .ToListAsync();
             if (messages == null)
             {
                 throw new UserFriendlyException("Messages does not exist");
@@ -71,10 +100,15 @@ namespace VolunteeringManagementSystem.Services.MessageService
             return ObjectMapper.Map<List<MessageDto>>(messages);
         }
 
-
-        public async Task DeleteMessagesByUserAsync(Guid userId)
+        [HttpDelete]
+        public async Task DeleteMessagesByUserAsync(Guid senderId)
         {
-            var messages = await _messageRepository.GetAllListAsync(m => m.Employee.Id == userId || m.Volunteer.Id == userId);
+            if (senderId ==Guid.Empty)
+            {
+                throw new UserFriendlyException("senderId does not exist");
+            }
+
+            var messages = await _messageRepository.GetAllListAsync(m => m.Employee.Id == senderId || m.Volunteer.Id == senderId);
             if (messages == null)
             {
                 throw new UserFriendlyException("Messages does not exist of this User");

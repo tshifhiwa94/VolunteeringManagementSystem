@@ -13,7 +13,7 @@ namespace VolunteeringManagementSystem.Services.VolunteerSkillService
     {
         Task<VolunteerSkillDto> GetAsync(Guid id);
         Task<List<VolunteerSkillDto>> GetAllAsync();
-        Task<VolunteerSkillDto> CreateAsync(VolunteerSkillInputDto input);
+        Task<VolunteerSkillDto> CreateAsync(VolunteerSkillDto input);
         Task<VolunteerSkillDto> UpdateAsync(VolunteerSkillDto input);
         Task DeleteAsync(Guid id);
     }

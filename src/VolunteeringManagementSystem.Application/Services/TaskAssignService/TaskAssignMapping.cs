@@ -18,9 +18,16 @@ namespace VolunteeringManagementSystem.Services.TaskAssignService
                 .ForMember(x => x.TaskId, m => m.MapFrom(x => x.TaskItem != null ? x.TaskItem.Id : (Guid?)null))
                  .ForMember(x => x.VolunteerId, m => m.MapFrom(x => x.Volunteer != null ? x.Volunteer.Id : (Guid?)null));
 
+            CreateMap<TaskAssign, TaskSubmissionDto>()
+                .ForMember(x => x.TaskId, m => m.MapFrom(x => x.TaskItem != null ? x.TaskItem.Id : (Guid?)null))
+                 .ForMember(x => x.VolunteerId, m => m.MapFrom(x => x.Volunteer != null ? x.Volunteer.Id : (Guid?)null));
+
 
 
             CreateMap<TaskAssignDto, TaskAssign>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<TaskSubmissionDto, TaskAssign>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }

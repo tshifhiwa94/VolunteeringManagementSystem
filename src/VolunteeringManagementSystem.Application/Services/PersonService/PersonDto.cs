@@ -22,16 +22,18 @@ namespace VolunteeringManagementSystem.Services.PersonService
         public string Surname { get; set; }
         public string Password { get; set; }
         public RefListGender Gender { get; set; }
-        public string GenderName { get; set; }
+        public string ?GenderName { get; set; }
 
         [StringLength(13)]
         public string IdNumber { get; set; }
 
         public string Phone { get; set; }
         public string EmailAddress { get; set; }
-        public string Address { get; set; }
+  
+        public AddressDto Address { get; set; }
         public long UserId { get; set; }
 
+        [NotMapped]
         public string[] RoleNames { get; set; }
     }
 }

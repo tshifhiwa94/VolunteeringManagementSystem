@@ -51,6 +51,7 @@ namespace VolunteeringManagementSystem.Services.TaskService
                 throw new UserFriendlyException("Task does not exist");
             }
             taskItem.Employee = _employeeRepository.Get(input.EmployeeId);
+            
 
             return ObjectMapper.Map<TaskItemDto>(await _taskItemRepository.InsertAsync(taskItem));
         }

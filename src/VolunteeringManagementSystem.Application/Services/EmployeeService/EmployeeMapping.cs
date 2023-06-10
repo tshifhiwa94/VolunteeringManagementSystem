@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VolunteeringManagementSystem.Authorization.Users;
 using VolunteeringManagementSystem.Domain;
+using VolunteeringManagementSystem.Services.AddressService.Dto;
 using VolunteeringManagementSystem.Services.EmployeeService.Dto;
 using VolunteeringManagementSystem.Services.RefListHelper;
 using VolunteeringManagementSystem.Services.VolunteerService.Dto;
@@ -18,10 +19,11 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         {
             CreateMap<Employee, EmployeeDto>()
                  .ForMember(x => x.DepartmentId, m => m.MapFrom(x => x.Department != null ? x.Department.Id : (Guid?)null))
+                 //.ForMember(x => x.Address, m => m.MapFrom(x => x.Address != null ? x.Address.Id : (Guid?)null))
                  .ForMember(dto => dto.GenderName, opt => opt.MapFrom(src => src.Gender != null && src.Gender != 0 ? src.Gender.GetnumDescription() : null))
                  .ForMember(dto => dto.UserId, opt => opt.MapFrom(src => src.User != null ? src.User.Id : (long?)null));
 
-
+            CreateMap<Address, AddressDto>();
 
 
             CreateMap<EmployeeDto, User>()
@@ -31,6 +33,9 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
                 .ForMember(x => x.Name, m => m.MapFrom(x => x.Name))
                 .ForMember(x => x.UserName, m => m.MapFrom(x => x.UserName))
                 .ForMember(x => x.Surname, m => m.MapFrom(x => x.Surname));
+
+            CreateMap<AddressDto, Employee>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
 
             CreateMap<EmployeeDto, User>()

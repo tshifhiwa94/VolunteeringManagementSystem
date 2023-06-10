@@ -24,7 +24,7 @@ namespace VolunteeringManagementSystem.Domain
         public virtual RefListGender Gender { get; set; }
         public virtual string Phone { get; set; }
         public virtual string EmailAddress { get; set; }
-        public virtual string Address { get; set; }
+        public virtual Address Address { get; set; }
         public User User { get; set; }
 
         [NotMapped]

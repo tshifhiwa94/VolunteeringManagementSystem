@@ -1,5 +1,7 @@
 ﻿using Abp.Application.Services;
 using Abp.Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +45,7 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService
            await _repository.DeleteAsync(id);
         }
 
-        public async Task<List<VolunteerTaskEvaluationDto>> GetAllAsync()
+        public async Task<List<VolunteerTaskEvaluationDto>> GetAllTaskEvaluation()
         {
             var taskEvaluations =  _repository.GetAllIncluding(a => a.TaskAssign, b => b.Employee, z => z.Volunteer).ToList();
             return  ObjectMapper.Map<List<VolunteerTaskEvaluationDto>>(taskEvaluations);
@@ -62,8 +64,12 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService
             ObjectMapper.Map(input, taskEvaluation);
             return ObjectMapper.Map<VolunteerTaskEvaluationDto>(await _repository.UpdateAsync(taskEvaluation));
         }
+        
+       
 
-        public async Task<VolunteerTaskEvaluationAnalysisDto> PerformAnalysisAsync()
+
+
+        public async Task<VolunteerTaskEvaluationAnalysisDto> PerformAnalysis()
         {
             var taskEvaluations = await _repository.GetAllListAsync();
 
@@ -74,11 +80,6 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService
 
             return analysis;
         }
-
-
-
-
-
 
     }
 }

@@ -10,6 +10,7 @@ using VolunteeringManagementSystem.Authorization.Users;
 using VolunteeringManagementSystem.Domain;
 using VolunteeringManagementSystem.Domain.Enum;
 using VolunteeringManagementSystem.Services.PersonService;
+using VolunteeringManagementSystem.Services.VolunteerSkillService.Dto;
 
 namespace VolunteeringManagementSystem.Services.VolunteerService.Dto
 {

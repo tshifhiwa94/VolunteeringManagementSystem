@@ -8,7 +8,7 @@ using VolunteeringManagementSystem.Domain.Attributes;
 
 namespace VolunteeringManagementSystem.Domain
 {
-    [Entity(TypeShortAlias = "Vms.VolunteerTaskEvaluation")]
+
     public class VolunteerTaskEvaluation:FullAuditedEntity<Guid>
     {
         public virtual double Rating { get; set; }

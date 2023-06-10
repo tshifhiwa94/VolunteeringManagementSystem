@@ -24,7 +24,7 @@ namespace VolunteeringManagementSystem.Services.VolunteerSkillService
 
         }
 
-        public async Task<VolunteerSkillDto> CreateAsync(VolunteerSkillInputDto input)
+        public async Task<VolunteerSkillDto> CreateAsync(VolunteerSkillDto input)
         {
             var skill = _skillRepository.Get(input.SkillId);
             var volunteer = _volunteerRepository.Get(input.VolunteerId);

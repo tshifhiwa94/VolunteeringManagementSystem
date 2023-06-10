@@ -9,7 +9,7 @@ using VolunteeringManagementSystem.Domain.Enum;
 
 namespace VolunteeringManagementSystem.Domain
 {
-    [Entity(TypeShortAlias = "Vms.TaskItem")]
+
     public class TaskItem:FullAuditedEntity<Guid>
     {
         public virtual string Title { get; set; }
@@ -17,7 +17,7 @@ namespace VolunteeringManagementSystem.Domain
 
         public virtual DateTime DeadLine { get; set; }
         public virtual RefListStatus Status { get; set; }
+
         public virtual Employee Employee { get; set; }
-        public virtual DateTime? CompletedDate { get; set; }
     }
 }

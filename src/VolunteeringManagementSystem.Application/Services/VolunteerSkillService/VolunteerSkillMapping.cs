@@ -18,10 +18,6 @@ namespace VolunteeringManagementSystem.Services.VolunteerSkillService
                 .ForMember(x => x.SkillId, m => m.MapFrom(x => x.Skill != null ? x.Skill.Id : (Guid?)null))
                 .ForMember(x => x.VolunteerId, m => m.MapFrom(x => x.Volunteer != null ? x.Volunteer.Id : (Guid?)null));
 
-            CreateMap<VolunteerSkill, VolunteerSkillInputDto>()
-                .ForMember(x => x.SkillId, m => m.MapFrom(x => x.Skill != null ? x.Skill.Id : (Guid?)null))
-                .ForMember(x => x.VolunteerId, m => m.MapFrom(x => x.Volunteer != null ? x.Volunteer.Id : (Guid?)null));
-
 
 
             CreateMap<VolunteerSkillDto, VolunteerSkill>()

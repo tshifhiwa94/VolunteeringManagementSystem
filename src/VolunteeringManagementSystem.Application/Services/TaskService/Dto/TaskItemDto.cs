@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VolunteeringManagementSystem.Domain.Enum;
 using VolunteeringManagementSystem.Domain;
+using VolunteeringManagementSystem.Services.TaskSkillService.Dto;
 
 namespace VolunteeringManagementSystem.Services.TaskService.Dto
 {
@@ -19,6 +20,5 @@ namespace VolunteeringManagementSystem.Services.TaskService.Dto
         public DateTime DeadLine { get; set; }
         public  RefListStatus Status { get; set; }
         public  Guid EmployeeId { get; set; }
-        public  DateTime? CompletedDate { get; set; }
     }
 }

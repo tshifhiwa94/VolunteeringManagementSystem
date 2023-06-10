@@ -11,7 +11,7 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService
     public interface ITaskEvaluationAppService:IApplicationService
     {
         Task<VolunteerTaskEvaluationDto> GetAsync(Guid id);
-        Task<List<VolunteerTaskEvaluationDto>> GetAllAsync();
+        Task<List<VolunteerTaskEvaluationDto>> GetAllTaskEvaluation();
         Task<VolunteerTaskEvaluationDto> CreateAsync(VolunteerTaskEvaluationDto input);
         Task<VolunteerTaskEvaluationDto> UpdateAsync(VolunteerTaskEvaluationDto input);
         Task DeleteAsync(Guid id);
