@@ -14,10 +14,8 @@ namespace VolunteeringManagementSystem.Domain
     {
         public virtual string Title { get; set; }
         public virtual string Description { get; set; }
-
         public virtual DateTime DeadLine { get; set; }
-        public virtual RefListStatus Status { get; set; }
-
+        public virtual RefListTaskStatus Status { get; set; }
         public virtual Employee Employee { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace VolunteeringManagementSystem.Services.TaskService.Dto
     {
         public  string Title { get; set; }
         public  string Description { get; set; }
-
+        public string RequiredSkills { get; set; }
         public DateTime DeadLine { get; set; }
         public  RefListStatus Status { get; set; }
         public  Guid EmployeeId { get; set; }

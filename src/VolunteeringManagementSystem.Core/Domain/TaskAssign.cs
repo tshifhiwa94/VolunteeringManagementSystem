@@ -16,13 +16,9 @@ namespace VolunteeringManagementSystem.Domain
         public virtual RefListStatus Status { get; set; }
         public DateTime Deadline { get; set; }
         public virtual DateTime? CompletedDate { get; set; }
-        public virtual string? Submission { get; set; }
-
-
+        public virtual string? FilePath { get; set; }
         public virtual TaskItem TaskItem { get; set; }
         public virtual Volunteer Volunteer { get; set;}
 
-        public virtual List<TaskSkill> RequiredSkills { get; set; }
-        public virtual List<VolunteerSkill> VolunteerSkills { get; set; }
     }
 }

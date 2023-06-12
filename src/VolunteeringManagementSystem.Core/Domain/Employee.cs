@@ -12,7 +12,7 @@ namespace VolunteeringManagementSystem.Domain
     [DiscriminatorValue("Vms.Employee")]
     public class Employee:Person
     {
-        public virtual string EmployeeNo { get; set; }
+        public virtual string EmpoyeeNo { get; set; }
         public virtual Department Department { get; set;}
     }
 }

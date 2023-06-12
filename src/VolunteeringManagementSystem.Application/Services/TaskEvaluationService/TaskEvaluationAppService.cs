@@ -71,7 +71,8 @@ namespace VolunteeringManagementSystem.Services.TaskEvaluationService
 
         public async Task<VolunteerTaskEvaluationAnalysisDto> PerformAnalysis()
         {
-            var taskEvaluations = await _repository.GetAllListAsync();
+            var taskEvaluations = await _repository.GetAllIncluding(x=>x.Volunteer).ToListAsync();
+            
 
             var analysis = new VolunteerTaskEvaluationAnalysisDto();
 

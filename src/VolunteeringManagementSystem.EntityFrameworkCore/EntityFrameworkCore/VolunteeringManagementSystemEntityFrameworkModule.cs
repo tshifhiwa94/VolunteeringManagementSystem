@@ -22,7 +22,7 @@ namespace VolunteeringManagementSystem.EntityFrameworkCore
             {
                 Configuration.Modules.AbpEfCore().AddDbContext<VolunteeringManagementSystemDbContext>(options =>
                 {
-                    if (options.ExistingConnection != null)
+                   if(options.ExistingConnection != null)
                     {
                         VolunteeringManagementSystemDbContextConfigurer.Configure(options.DbContextOptions, options.ExistingConnection);
                     }

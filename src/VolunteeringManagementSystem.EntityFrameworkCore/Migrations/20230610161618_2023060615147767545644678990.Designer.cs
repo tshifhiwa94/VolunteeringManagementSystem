@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteeringManagementSystem.EntityFrameworkCore;
 
@@ -11,9 +12,10 @@ using VolunteeringManagementSystem.EntityFrameworkCore;
 namespace VolunteeringManagementSystem.Migrations
 {
     [DbContext(typeof(VolunteeringManagementSystemDbContext))]
-    partial class VolunteeringManagementSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230610161618_2023060615147767545644678990")]
+    partial class _2023060615147767545644678990
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1966,7 +1968,7 @@ namespace VolunteeringManagementSystem.Migrations
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("TaskSkills");
+                    b.ToTable("TaskSkill");
                 });
 
             modelBuilder.Entity("VolunteeringManagementSystem.Domain.VolunteerSkill", b =>

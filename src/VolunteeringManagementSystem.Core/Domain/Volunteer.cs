@@ -14,7 +14,5 @@ namespace VolunteeringManagementSystem.Domain
     {
         public virtual string VolunteerNo { get; set; }
         public virtual bool IsAvailable { get; set; }
-     
-
     }
 }

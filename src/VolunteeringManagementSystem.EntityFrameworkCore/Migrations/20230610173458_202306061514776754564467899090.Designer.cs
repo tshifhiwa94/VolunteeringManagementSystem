@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteeringManagementSystem.EntityFrameworkCore;
 
@@ -11,9 +12,10 @@ using VolunteeringManagementSystem.EntityFrameworkCore;
 namespace VolunteeringManagementSystem.Migrations
 {
     [DbContext(typeof(VolunteeringManagementSystemDbContext))]
-    partial class VolunteeringManagementSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230610173458_202306061514776754564467899090")]
+    partial class _202306061514776754564467899090
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

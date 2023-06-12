@@ -64,6 +64,7 @@ namespace VolunteeringManagementSystem.Services.TaskService
                 throw new UserFriendlyException("This TaskItem  does not exist of this "+input.Id);
             }
             ObjectMapper.Map(input, taskItem);
+
             return ObjectMapper.Map<TaskItemDto>(await _taskItemRepository.UpdateAsync(taskItem));
         }
 

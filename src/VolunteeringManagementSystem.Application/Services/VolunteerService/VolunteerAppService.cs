@@ -23,13 +23,16 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
         private readonly IRepository<Volunteer,Guid> _volunteerRepository;
         private readonly UserManager _userManager;
         private readonly IRepository<Address, Guid> _addressAppService;
-     
-        public VolunteerAppService(IRepository<Volunteer, Guid> volunteerRepository, UserManager userManager, IRepository<Address, Guid> addressAppService)
+        private readonly IRepository<TaskItem, Guid> _taskAppService;
+
+        public VolunteerAppService(IRepository<Volunteer, Guid> volunteerRepository, UserManager userManager, IRepository<TaskItem, Guid> taskAppService ,IRepository<Address, Guid> addressAppService)
         {
             _volunteerRepository=volunteerRepository;
             _userManager = userManager;
             _addressAppService = addressAppService;
-           
+            _taskAppService = taskAppService;
+
+
         }
 
         [HttpPost]
@@ -82,7 +85,10 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
             return ObjectMapper.Map<VolunteerDto>(await _volunteerRepository.UpdateAsync(volunteer));
         }
 
-      
+     
+
+
+
 
         [HttpPost]
         private async Task<User> CreateUserAsync(VolunteerDto input)

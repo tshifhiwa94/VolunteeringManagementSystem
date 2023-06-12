@@ -19,6 +19,7 @@ namespace VolunteeringManagementSystem.Services.VolunteerService.Dto
     {
         public  string VolunteerNo { get; set; }
         public  bool IsAvailable { get; set; }
+ 
 
     }
 }
