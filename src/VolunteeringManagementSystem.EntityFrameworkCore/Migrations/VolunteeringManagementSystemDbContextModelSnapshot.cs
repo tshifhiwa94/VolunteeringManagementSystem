@@ -1837,6 +1837,9 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1851,9 +1854,6 @@ namespace VolunteeringManagementSystem.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<string>("Submission")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("TaskItemId")
                         .HasColumnType("uniqueidentifier");
@@ -1906,9 +1906,6 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("RequiredSkills")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -1952,17 +1949,12 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<Guid?>("SkillId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TaskAssignId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("TaskItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SkillId");
-
-                    b.HasIndex("TaskAssignId");
 
                     b.HasIndex("TaskItemId");
 
@@ -1999,17 +1991,12 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<Guid?>("SkillId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TaskAssignId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("VolunteerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SkillId");
-
-                    b.HasIndex("TaskAssignId");
 
                     b.HasIndex("VolunteerId");
 
@@ -2196,7 +2183,7 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeNo")
+                    b.Property<string>("EmpoyeeNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("DepartmentId");
@@ -2212,9 +2199,6 @@ namespace VolunteeringManagementSystem.Migrations
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Skills")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VolunteerNo")
                         .HasColumnType("nvarchar(max)");
@@ -2455,10 +2439,6 @@ namespace VolunteeringManagementSystem.Migrations
                         .WithMany()
                         .HasForeignKey("SkillId");
 
-                    b.HasOne("VolunteeringManagementSystem.Domain.TaskAssign", null)
-                        .WithMany("RequiredSkills")
-                        .HasForeignKey("TaskAssignId");
-
                     b.HasOne("VolunteeringManagementSystem.Domain.TaskItem", "TaskItem")
                         .WithMany()
                         .HasForeignKey("TaskItemId");
@@ -2473,10 +2453,6 @@ namespace VolunteeringManagementSystem.Migrations
                     b.HasOne("VolunteeringManagementSystem.Domain.Skill", "Skill")
                         .WithMany()
                         .HasForeignKey("SkillId");
-
-                    b.HasOne("VolunteeringManagementSystem.Domain.TaskAssign", null)
-                        .WithMany("VolunteerSkills")
-                        .HasForeignKey("TaskAssignId");
 
                     b.HasOne("VolunteeringManagementSystem.Domain.Volunteer", "Volunteer")
                         .WithMany()
@@ -2613,13 +2589,6 @@ namespace VolunteeringManagementSystem.Migrations
                     b.Navigation("Settings");
 
                     b.Navigation("Tokens");
-                });
-
-            modelBuilder.Entity("VolunteeringManagementSystem.Domain.TaskAssign", b =>
-                {
-                    b.Navigation("RequiredSkills");
-
-                    b.Navigation("VolunteerSkills");
                 });
 #pragma warning restore 612, 618
         }

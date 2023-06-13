@@ -164,7 +164,7 @@ namespace VolunteeringManagementSystem.Services.TaskAssignService
         //}
 
 
-        [HttpPost]
+        //[HttpPost]
         //public async Task<TaskSubmissionDto> SubmitTask(Guid id, TaskSubmissionDto input)
         //{
         //    var task = await _taskAssignRepository.GetAllIncluding(x => x.TaskItem, y => y.Volunteer).FirstOrDefaultAsync(x => x.Id == id);
@@ -180,59 +180,59 @@ namespace VolunteeringManagementSystem.Services.TaskAssignService
 
 
 
-        //public async Task<TaskAssignDto> SubmitTask(Guid Taskid, TaskSubmissionDto input)
-        //{
-        //    var task = await _taskAssignRepository.GetAllIncluding(x => x.TaskItem, y => y.Volunteer).FirstOrDefaultAsync(x => x.Id == Taskid);
-        //    if (task == null)
-        //    {
-
-        //        throw new Exception("Task not found.");
-        //    }
-
-
-
-
-        //    task.CompletedDate = input.CompletedDate;
-        //    task.FilePath = input.FileUpload;
-        //    task.Status = input.Status;
-        //    return ObjectMapper.Map<TaskAssignDto>(await _taskAssignRepository.UpdateAsync(task));
-        //}
-
-
-        public async Task<TaskAssignDto> SubmitTask(Guid taskId, TaskSubmissionDto input)
+        public async Task<TaskAssignDto> SubmitTask(Guid Taskid, TaskSubmissionDto input)
         {
-            var task = await _taskAssignRepository.GetAllIncluding(x => x.TaskItem, y => y.Volunteer)
-                .FirstOrDefaultAsync(x => x.Id == taskId);
-
+            var task = await _taskAssignRepository.GetAllIncluding(x => x.TaskItem, y => y.Volunteer).FirstOrDefaultAsync(x => x.Id == Taskid);
             if (task == null)
             {
+
                 throw new Exception("Task not found.");
             }
 
-            // Assign other properties from the input DTO
-            task.CompletedDate = input.CompletedDate;
+
+
+
+            task.CompletedDate = DateTime.Now;
+            task.FilePath = input.FilePath;
             task.Status = input.Status;
-
-            if (input.FileUpload != null && input.FileUpload.Length > 0)
-            {
-                var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyApp", "Storage");
-            
-                var fileName = Guid.NewGuid().ToString() + "_" + input.FileUpload.FileName;
-
-                var fullFilePath = Path.Combine(filePath, fileName);
-
-                using (var stream = new FileStream(fullFilePath, FileMode.Create))
-                {
-                    await input.FileUpload.CopyToAsync(stream);
-                }
-
-                task.FilePath = fullFilePath; 
-            }
-
-            var updatedTask = await _taskAssignRepository.UpdateAsync(task);
-
-            return ObjectMapper.Map<TaskAssignDto>(updatedTask);
+            return ObjectMapper.Map<TaskAssignDto>(await _taskAssignRepository.UpdateAsync(task));
         }
+
+
+        //public async Task<TaskAssignDto> SubmitTask(Guid taskId, TaskSubmissionDto input)
+        //{
+        //    var task = await _taskAssignRepository.GetAllIncluding(x => x.TaskItem, y => y.Volunteer)
+        //        .FirstOrDefaultAsync(x => x.Id == taskId);
+
+        //    if (task == null)
+        //    {
+        //        throw new Exception("Task not found.");
+        //    }
+
+        //    // Assign other properties from the input DTO
+        //    task.CompletedDate = input.CompletedDate;
+        //    task.Status = input.Status;
+
+        //    if (input.FileUpload != null && input.FileUpload.Length > 0)
+        //    {
+        //        var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyApp", "Storage");
+
+        //        var fileName = Guid.NewGuid().ToString() + "_" + input.FileUpload.FileName;
+
+        //        var fullFilePath = Path.Combine(filePath, fileName);
+
+        //        using (var stream = new FileStream(fullFilePath, FileMode.Create))
+        //        {
+        //            await input.FileUpload.CopyToAsync(stream);
+        //        }
+
+        //        task.FilePath = fullFilePath; 
+        //    }
+
+        //    var updatedTask = await _taskAssignRepository.UpdateAsync(task);
+
+        //    return ObjectMapper.Map<TaskAssignDto>(updatedTask);
+        //}
 
 
         [HttpGet]
