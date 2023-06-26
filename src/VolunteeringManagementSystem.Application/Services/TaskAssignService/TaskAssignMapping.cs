@@ -16,15 +16,14 @@ namespace VolunteeringManagementSystem.Services.TaskAssignService
         public TaskAssignMapping()
         {
             CreateMap<TaskAssign, TaskAssignDto>()
-                 .ForMember(dto => dto.StatusName, opt => opt.MapFrom(src => src.Status != null && src.Status!= 0 ? src.Status.GetnumDescription() : null))
-                .ForMember(x => x.TaskId, m => m.MapFrom(x => x.TaskItem != null ? x.TaskItem.Id : (Guid?)null))
-                 .ForMember(x => x.VolunteerId, m => m.MapFrom(x => x.Volunteer != null ? x.Volunteer.Id : (Guid?)null));
+                 .ForMember(dto => dto.StatusName, opt => opt.MapFrom(src => src.Status != null && src.Status != 0 ? src.Status.GetnumDescription() : null))
+                     .ForMember(x => x.VolunteerId, m => m.MapFrom(x => x.Volunteer != null  ? x.Volunteer.Id : (Guid?)null))
 
-            //CreateMap<TaskAssignDto, TaskSubmissionDto>()
-            //    .ForMember(dest => dest.FilePath, opt => opt.MapFrom(src => src.FilePath))
-            //        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-            //        .ForMember(dest => dest.AdditionalInfo, opt => opt.MapFrom(src => src.AdditionalInfo))
-            //        .ForMember(dest => dest.FilePath, opt => opt.Ignore())
+                    .ForMember(x => x.TaskId, m => m.MapFrom(x => x.TaskItem != null ? x.TaskItem.Id : (Guid?)null))
+                    .ForMember(x => x.Employee, m => m.MapFrom(x => x.TaskItem.Employee != null ? x.TaskItem.Employee : null))
+                     .ForMember(x => x.Volunteer, m => m.MapFrom(x => x.Volunteer != null ? x.Volunteer : null))
+                     .ForMember(x => x.Task, m => m.MapFrom(x => x.TaskItem != null ? x.TaskItem : null));
+                
 
 
 

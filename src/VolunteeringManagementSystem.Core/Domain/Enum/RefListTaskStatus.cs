@@ -11,13 +11,11 @@ namespace VolunteeringManagementSystem.Domain.Enum
     {
         [Description("Not Started")]
         notStarted = 1,
-
-        [Description("Active")]
-        progress= 2,
-
+        [Description("Assigned")]
+        assigned = 2,
         [Description("Completed")]
         completed= 3,
-        [Description("Over Due Date")]
+        [Description("OverDue")]
         overdue = 4,
 
     }

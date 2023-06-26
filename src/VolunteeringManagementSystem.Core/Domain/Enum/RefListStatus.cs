@@ -11,16 +11,12 @@ namespace VolunteeringManagementSystem.Domain.Enum
     public enum RefListStatus:int
     {
 
-        [Description("Not Started")]
-        notStarted = 1,
-
-        [Description("Progress")]
-        progress= 2,
+         [Description("Active")]
+            active = 1,
 
         [Description("Completed")]
-        completed= 3,
-        [Description("Other")]
-        other = 4,
+        completed= 2,
+
     }
 }
 

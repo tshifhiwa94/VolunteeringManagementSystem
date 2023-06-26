@@ -4,6 +4,7 @@ using Abp.IdentityFramework;
 using Abp.UI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +25,15 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
         private readonly UserManager _userManager;
         private readonly IRepository<Address, Guid> _addressAppService;
         private readonly IRepository<TaskItem, Guid> _taskAppService;
+        private readonly IRepository<TaskAssign, Guid> _taskAssignAppService;
 
-        public VolunteerAppService(IRepository<Volunteer, Guid> volunteerRepository, UserManager userManager, IRepository<TaskItem, Guid> taskAppService ,IRepository<Address, Guid> addressAppService)
+        public VolunteerAppService(IRepository<Volunteer, Guid> volunteerRepository, UserManager userManager, IRepository<TaskItem, Guid> taskAppService ,IRepository<Address, Guid> addressAppService, IRepository<TaskAssign, Guid> taskAssignAppService)
         {
             _volunteerRepository=volunteerRepository;
             _userManager = userManager;
             _addressAppService = addressAppService;
             _taskAppService = taskAppService;
+            _taskAssignAppService = taskAssignAppService;
 
 
         }
@@ -62,6 +65,21 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
         }
 
         [HttpGet]
+        public async Task<VolunteerDto> GetVolunteerByUserId(long userId)
+        {
+            var volunteer = _volunteerRepository.GetAllIncluding(x => x.User, x => x.Address)
+                                               .FirstOrDefault(x => x.User.Id == userId);
+
+            if (volunteer == null)
+            {
+                throw new UserFriendlyException("This volunteer does not exist");
+            }
+
+            return ObjectMapper.Map<VolunteerDto>(volunteer);
+        }
+
+
+        [HttpGet]
         public async Task<VolunteerDto> GetAsnyc(Guid id)
         {
             var volunteer = _volunteerRepository.GetAllIncluding(x => x.User,x=>x.Address).FirstOrDefault(x => x.Id == id);
@@ -72,6 +90,11 @@ namespace VolunteeringManagementSystem.Services.VolunteerService
             }
             return ObjectMapper.Map<VolunteerDto>(volunteer);
         }
+
+
+       
+
+
 
         [HttpPut]
         public async Task<VolunteerDto> UpdateAsync(VolunteerDto input)

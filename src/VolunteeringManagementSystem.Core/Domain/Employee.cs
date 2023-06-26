@@ -13,6 +13,6 @@ namespace VolunteeringManagementSystem.Domain
     public class Employee:Person
     {
         public virtual string EmpoyeeNo { get; set; }
-        public virtual Department Department { get; set;}
+        //public virtual Department Department { get; set;}
     }
 }

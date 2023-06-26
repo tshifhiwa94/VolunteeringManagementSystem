@@ -18,7 +18,7 @@ namespace VolunteeringManagementSystem.Services.EmployeeService
         public EmployeeMapping()
         {
             CreateMap<Employee, EmployeeDto>()
-                 .ForMember(x => x.DepartmentId, m => m.MapFrom(x => x.Department != null ? x.Department.Id : (Guid?)null))
+                 //.ForMember(x => x.DepartmentId, m => m.MapFrom(x => x.Department != null ? x.Department.Id : (Guid?)null))
                  //.ForMember(x => x.Address, m => m.MapFrom(x => x.Address != null ? x.Address.Id : (Guid?)null))
                  .ForMember(dto => dto.GenderName, opt => opt.MapFrom(src => src.Gender != null && src.Gender != 0 ? src.Gender.GetnumDescription() : null))
                  .ForMember(dto => dto.UserId, opt => opt.MapFrom(src => src.User != null ? src.User.Id : (long?)null));

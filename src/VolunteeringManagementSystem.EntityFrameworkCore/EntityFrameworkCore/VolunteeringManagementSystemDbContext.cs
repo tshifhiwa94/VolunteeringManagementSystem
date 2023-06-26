@@ -21,6 +21,7 @@ namespace VolunteeringManagementSystem.EntityFrameworkCore
         public DbSet<Address> Address { get; set; }
         public DbSet<VolunteerSkill> VolunteerSkills { get; set; } 
         public DbSet<TaskSkill> TaskSkills { get; set; }
+        public DbSet<StoredFile> StoredFiles { get; set; }
 
         public DbSet<VolunteerTaskEvaluation> VolunteerTaskEvaluations { get; set; }
         

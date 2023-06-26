@@ -53,6 +53,18 @@ namespace VolunteeringManagementSystem.Users
             _logInManager = logInManager;
         }
 
+        public async Task<List<string>> GetUserRoles(long userId)
+        {
+            var user = await _userManager.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return roles.ToList();
+        }
         public override async Task<UserDto> CreateAsync(CreateUserDto input)
         {
             CheckCreatePermission();

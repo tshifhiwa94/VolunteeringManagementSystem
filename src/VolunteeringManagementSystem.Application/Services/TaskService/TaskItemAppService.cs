@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using System;
@@ -6,20 +7,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VolunteeringManagementSystem.Authorization;
 using VolunteeringManagementSystem.Domain;
+using VolunteeringManagementSystem.Domain.Enum;
 using VolunteeringManagementSystem.Services.TaskService.Dto;
 
 namespace VolunteeringManagementSystem.Services.TaskService
 {
+    //[AbpAuthorize(PermissionNames.Pages_Tasks)]
+    //[AbpAuthorize]
     public class TaskItemAppService : ApplicationService, ITaskItemAppService
     {
         private readonly IRepository<TaskItem, Guid> _taskItemRepository;
         private readonly IRepository<Employee, Guid> _employeeRepository;
+        private readonly IRepository<TaskAssign, Guid> _taskAssignRepository;
 
-        public TaskItemAppService(IRepository<TaskItem, Guid> taskItemRepository, IRepository<Employee, Guid> employeeRepository)
+        public TaskItemAppService(IRepository<TaskItem, Guid> taskItemRepository, IRepository<Employee, Guid> employeeRepository, IRepository<TaskAssign, Guid> taskAssignRepository)
         {
             _taskItemRepository = taskItemRepository;
             _employeeRepository = employeeRepository;
+            _taskAssignRepository = taskAssignRepository;
         }
 
         public async Task<TaskItemDto> GetAsync(Guid id)
@@ -43,6 +50,20 @@ namespace VolunteeringManagementSystem.Services.TaskService
             }
             return ObjectMapper.Map<List<TaskItemDto>>(taskItems);
         }
+
+
+        public async Task<List<TaskItemDto>> GetAllTasksByEmployeeId(Guid employeeId)
+        {
+            var taskItems =  _taskItemRepository.GetAllIncluding(m => m.Employee)
+                                                    .Where(m => m.Employee.Id == employeeId)
+                                                    .ToList();
+
+            return ObjectMapper.Map<List<TaskItemDto>>(taskItems);
+        }
+
+
+
+
 
         public async Task<TaskItemDto> CreateAsync(TaskItemDto input)
         {
@@ -70,7 +91,17 @@ namespace VolunteeringManagementSystem.Services.TaskService
 
         public async Task DeleteAsync(Guid id)
         {
-            await _taskItemRepository.DeleteAsync(id);
+            var taskItem = await _taskItemRepository.FirstOrDefaultAsync(x => x.Id == id);
+
+            //cant delete a task that is completed
+            if (taskItem.Status == RefListTaskStatus.completed) 
+            {
+                throw new UserFriendlyException("This TaskItem does is completed, you can not delete a completed task " + taskItem.Title);
+            }
+
+            await _taskAssignRepository.DeleteAsync(x => x.TaskItem.Id == taskItem.Id);
+            await _taskItemRepository.DeleteAsync(taskItem); 
+
         }
     }
 

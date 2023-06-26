@@ -22,7 +22,7 @@ namespace VolunteeringManagementSystem.Services.PersonService
         public string Surname { get; set; }
         public string Password { get; set; }
         public RefListGender Gender { get; set; }
-        public string ?GenderName { get; set; }
+        public string GenderName { get; set; }
 
         [StringLength(13)]
         public string IdNumber { get; set; }

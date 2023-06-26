@@ -18,7 +18,7 @@ namespace VolunteeringManagementSystem.Services.EmployeeService.Dto
     public class EmployeeDto : PersonDto
     {
         public string EmployeeNo { get; set; }
-        public Guid DepartmentId { get; set; }
+        //public Guid DepartmentId { get; set; }
         //public DepartmentDto? Department { get; set; }
 
     }
